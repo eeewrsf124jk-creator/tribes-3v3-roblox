@@ -1,0 +1,97 @@
+{
+  "name": "Tribes3v3_CombatArena",
+  "servePort": 34872,
+  "tree": {
+    "$className": "DataModel",
+    "Workspace": {
+      "$className": "Workspace",
+      "$attributes": {
+        "PlaceRole": "Arena",
+        "MaxPlayers": 6
+      },
+      "$properties": {
+        "Gravity": 196.2,
+        "FallenPartsDestroyHeight": -500,
+        "StreamingEnabled": true,
+        "SignalBehavior": "Deferred"
+      }
+    },
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "Modules": {
+        "$path": "src/ReplicatedStorage/Modules"
+      },
+      "BuilderModules": {
+        "$path": "src/ReplicatedStorage/BuilderModules"
+      }
+    },
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "ServerMain": {
+        "$path": "src/ServerScriptService/ServerMain.server.luau"
+      },
+      "Services": {
+        "$path": "src/ServerScriptService/Services"
+      }
+    },
+    "StarterGui": {
+      "$className": "StarterGui",
+      "$properties": {
+        "ResetPlayerGuiOnSpawn": false
+      }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "$properties": {
+        "CameraMaxZoomDistance": 18,
+        "CameraMinZoomDistance": 0.5,
+        "CharacterWalkSpeed": 18,
+        "CharacterJumpPower": 50,
+        "CharacterUseJumpPower": true,
+        "LoadCharacterAppearance": true
+      },
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "ClientMain": {
+          "$path": "src/StarterPlayerScripts/ClientMain.client.luau"
+        },
+        "Controllers": {
+          "$path": "src/StarterPlayerScripts/Controllers"
+        }
+      }
+    },
+    "SoundService": {
+      "$className": "SoundService",
+      "$properties": {
+        "RespectFilteringEnabled": true,
+        "AmbientReverb": "NoReverb",
+        "RolloffScale": 1
+      }
+    },
+    "Lighting": {
+      "$className": "Lighting",
+      "$properties": {
+        "Technology": "Future",
+        "ClockTime": 14.5,
+        "Brightness": 2.2,
+        "GlobalShadows": true,
+        "EnvironmentDiffuseScale": 1,
+        "EnvironmentSpecularScale": 1,
+        "OutdoorAmbient": [
+          0.5,
+          0.5,
+          0.55
+        ]
+      }
+    },
+    "Teams": {
+      "$className": "Teams"
+    },
+    "Players": {
+      "$className": "Players",
+      "$properties": {
+        "CharacterAutoLoads": false
+      }
+    }
+  }
+}
