@@ -148,6 +148,9 @@ export type RosterEntry = {
 }
 
 export type RoundState = {
+	MatchId: string,
+	Mode: string,
+	Kind: string,
 	Phase: RoundPhase,
 	PhaseEndsAt: number,
 	Round: number,
@@ -158,6 +161,12 @@ export type RoundState = {
 	WinningTeam: TeamName?,
 	RingRadius: number,
 	RingActive: boolean,
+	RingCenter: Vector3,
+	RingShrinkStartsAt: number, -- server time; 0 while the ring is idle
+	RingShrinkDuration: number,
+	RingStartRadius: number,
+	BannerTags: { string }?,
+	RoundWinner: TeamName?,
 }
 
 export type DropCard = {
@@ -187,7 +196,7 @@ export type POTGActorFrame = { number } -- {x, y, z, yaw, pitch, flags}
 
 export type POTGEvent = {
 	T: number,
-	Kind: "Shot" | "Kill" | "Swing" | "Hit",
+	Kind: "Shot" | "Kill" | "Swing" | "Hit" | "Equip",
 	ActorId: string,
 	TargetId: string?,
 	Origin: Vector3?,
@@ -221,6 +230,54 @@ export type DamageReport = {
 	Blocked: boolean,
 	Killed: boolean,
 	WeaponId: string,
+}
+
+export type InventorySlot = { ItemId: string, Count: number, Level: number }
+
+-- Per-combatant inventory snapshot pushed to the owning client on every change.
+export type InventoryView = {
+	Context: string,
+	Slots: { InventorySlot },
+	Equipped: number,
+	Ammo: { Arrows: number, Bullets: number, FireArrows: number },
+	UseFireArrows: boolean,
+	ArmorId: string?,
+	Armor: number,
+	ArmorMax: number,
+	ShieldHP: number,
+	ShieldMax: number,
+}
+
+export type CombatEventKind = "Damage" | "Kill" | "ArmorBroken" | "Blocked" | "ShieldBroken" | "Status" | "Healed"
+
+export type CombatEventPacket = {
+	Kind: CombatEventKind,
+	Report: DamageReport?,
+	KillerId: string?,
+	KillerName: string?,
+	VictimId: string?,
+	VictimName: string?,
+	WeaponId: string?,
+	KillerHP: number?,
+	Headshot: boolean?,
+	Status: string?,
+	Duration: number?,
+	TargetId: string?,
+	Amount: number?,
+	Position: Vector3?,
+}
+
+export type PartyView = { Leader: number, Members: { { UserId: number, Name: string } }, Queued: boolean, QueueStartedAt: number }
+
+export type RoomView = {
+	Id: string,
+	Name: string,
+	Mode: string,
+	HostId: number,
+	FillBots: boolean,
+	Alpha: { { UserId: number, Name: string } },
+	Bravo: { { UserId: number, Name: string } },
+	TeamSize: number,
 }
 
 return {}
