@@ -46,6 +46,10 @@ local REQUIRED_SCRIPTS: { { Parent: Instance, Path: string } } = {
 	{ Parent = StarterPlayer, Path = "StarterPlayerScripts/Controllers/WeaponAndProjectileController" },
 	{ Parent = StarterPlayer, Path = "StarterPlayerScripts/Controllers/CombatFeedbackAndHUDController" },
 	{ Parent = StarterPlayer, Path = "StarterPlayerScripts/Controllers/POTGAndVictorySequenceController" },
+	{ Parent = StarterPlayer, Path = "StarterPlayerScripts/Controllers/MovementController" },
+	{ Parent = StarterPlayer, Path = "StarterPlayerScripts/Controllers/LobbyUIController" },
+	{ Parent = StarterPlayer, Path = "StarterPlayerScripts/Controllers/ProjectileRenderer" },
+	{ Parent = StarterPlayer, Path = "StarterPlayerScripts/Controllers/CharacterPoses" },
 }
 
 local function find(parent: Instance, path: string): Instance?

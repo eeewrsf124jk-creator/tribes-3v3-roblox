@@ -66,6 +66,7 @@ export type Member = {
 	Loadout: Types.Loadout,
 	Left: boolean,
 	PlayAgain: boolean,
+	LobbyVote: boolean, -- chose LOBBY on the summary screen
 	Spawning: boolean,
 	RoundKills: number,
 	RoundDeaths: number,
@@ -724,6 +725,7 @@ local function settle(match: Match)
 					XPBefore = result.XPBefore,
 					XPAfter = result.XPAfter,
 					XPNeeded = result.XPNeeded,
+					GloryDelta = result.GloryDelta,
 					PlayAgainSeconds = GameConfig.Phases.VictoryDropAndSummary,
 				}
 				Net.Reliable("MatchSummary"):FireClient(player, summary)
@@ -740,6 +742,11 @@ local function cleanup(match: Match)
 	match.Running = false
 	Combat.SetContextEnabled(match.Context, false)
 	Combat.ClearContext(match.Context)
+	-- tell clients the match is over (nil state) before their combatants are removed
+	local ended = Net.Reliable("RoundStateChanged")
+	for _, p in memberPlayers(match) do
+		ended:FireClient(p, nil)
+	end
 	for _, m in match.Members do
 		local c = m.Combatant
 		if c then
@@ -870,7 +877,7 @@ local function runMatch(match: Match)
 		while now() < deadline do
 			local everyoneDecided = true
 			for _, m in match.Members do
-				if m.Player and not m.Left and m.Player.Parent == Players and not m.PlayAgain then
+				if m.Player and not m.Left and m.Player.Parent == Players and not m.PlayAgain and not m.LobbyVote then
 					everyoneDecided = false
 				end
 			end
@@ -935,6 +942,7 @@ function Round.StartMatch(spec: MatchSpec): Match
 			Loadout = PlayerData.ActiveLoadout(entry.Player),
 			Left = false,
 			PlayAgain = false,
+			LobbyVote = false,
 			Spawning = false,
 			RoundKills = 0,
 			RoundDeaths = 0,
@@ -972,6 +980,7 @@ function Round.StartMatch(spec: MatchSpec): Match
 					Loadout = presets[rng:NextInteger(1, #presets)],
 					Left = false,
 					PlayAgain = false,
+					LobbyVote = false,
 					Spawning = false,
 					RoundKills = 0,
 					RoundDeaths = 0,
@@ -1070,12 +1079,13 @@ local function onSwitchPreset(player: Player, index: any)
 end
 
 local function onQueueAction(player: Player, action: any)
-	if action ~= "PlayAgain" then
+	if action ~= "PlayAgain" and action ~= "Lobby" then
 		return
 	end
-	local _, member = memberFor(player)
-	if member then
-		member.PlayAgain = true
+	local match, member = memberFor(player)
+	if match and member and match.Phase == "VictoryDropAndSummary" then
+		member.PlayAgain = action == "PlayAgain"
+		member.LobbyVote = action == "Lobby"
 	end
 end
 

@@ -189,6 +189,7 @@ export type MatchSummary = {
 	XPBefore: number,
 	XPAfter: number,
 	XPNeeded: number,
+	GloryDelta: number, -- this player's Glory change (0 outside ranked)
 	PlayAgainSeconds: number,
 }
 

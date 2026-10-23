@@ -405,13 +405,13 @@ function Combat.Fire(c: Combatant, slotIndex: number, origin: Vector3, direction
 
 	if spec.PelletCount and spec.PelletDmg then
 		local dirs = Ballistics.PelletDirections(direction, spec.SpreadAngle or 8, spec.PelletCount, seed)
-		for i, d in dirs do
+		for _, d in dirs do
 			Projectiles.Spawn(c, slot.ItemId, origin, d * speed, gravityScale, {
 				Damage = spec.PelletDmg * level,
 				HeadMult = spec.HeadMult,
 				Falloff = true,
 				Elapsed = elapsed,
-				Silent = i > 1,
+				Silent = true, -- clients draw the whole volley from the seeded packet below
 			})
 		end
 		Net.Reliable("ProjectileReplicate"):FireAllClients({
