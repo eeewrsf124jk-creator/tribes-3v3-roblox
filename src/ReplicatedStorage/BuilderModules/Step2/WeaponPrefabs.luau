@@ -556,6 +556,7 @@ function WeaponPrefabs.Katana(): Model
 	K.Part(saya, "Koiguchi", Vector3.new(0.2, 0.15, 0.34), CFrame.new(1.5, 1.8, 0), C.Gold, M.Foil)
 	K.Part(saya, "Kojiri", Vector3.new(0.2, 0.15, 0.34), CFrame.new(1.5, -1.8, 0), C.Gold, M.Foil)
 	saya.PrimaryPart = sayaRoot
+	K.WeldAll(saya, sayaRoot)
 	saya:SetAttribute("WearPart", "LowerTorso")
 	saya:SetAttribute("WearC0", CFrame.new(-1.05, -0.2, 0.2) * CFrame.Angles(math.rad(60), 0, math.rad(10)))
 	dmgPoints(handle, 0.9, y, 7, z * 0.5)
