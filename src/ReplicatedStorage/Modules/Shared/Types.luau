@@ -192,7 +192,7 @@ export type MatchSummary = {
 	PlayAgainSeconds: number,
 }
 
-export type POTGActorFrame = { number } -- {x, y, z, yaw, pitch, flags}
+export type POTGActorFrame = { number } -- {t, x, y, z, yaw, pitch, flags}
 
 export type POTGEvent = {
 	T: number,
