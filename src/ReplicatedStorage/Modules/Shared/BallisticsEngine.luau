@@ -85,7 +85,7 @@ end
 
 function BallisticsEngine.Reflect(v: Vector3, n: Vector3): Vector3
 	local unitN = if n.Magnitude > 0 then n.Unit else Vector3.yAxis
-	return v - 2 * v:Dot(unitN) * unitN
+	return v - unitN * (2 * v:Dot(unitN))
 end
 
 -- Steer a returning projectile toward `target`. `responsiveness` is the exponential rate (1/s).

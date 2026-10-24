@@ -1,6 +1,6 @@
 --!strict
 -- Validates a 12-point loadout: MaxPoints <= 12, MaxSlots <= 6, ammo bundles
--- (1 PT = 12 arrows / 6 bullets / 6 fire arrows), single armor, no duplicate items,
+-- (1 PT = 12 arrows / 1 PT = 6 bullets / 2 PT = 6 fire arrows; caps 36 / 12 / 12), single armor, no duplicate items,
 -- ammo must match a weapon, and every item must be unlocked when an ownership table is given.
 
 local Types = require(script.Parent.Types)
@@ -13,7 +13,8 @@ local LoadoutBudgetValidator = {}
 
 LoadoutBudgetValidator.MaxPoints = EquipmentDatabase.MaxPoints
 LoadoutBudgetValidator.MaxSlots = EquipmentDatabase.MaxSlots
-LoadoutBudgetValidator.MaxAmmoBundles = 6
+-- Per-kind bundle caps (see EquipmentDatabase.AmmoBundleMax).
+LoadoutBudgetValidator.AmmoBundleMax = EquipmentDatabase.AmmoBundleMax
 
 function LoadoutBudgetValidator.EmptyLoadout(name: string?): Loadout
 	return {
@@ -38,7 +39,10 @@ function LoadoutBudgetValidator.CountPoints(loadout: Loadout): number
 			points += armor.Cost
 		end
 	end
-	points += loadout.Ammo.Arrows + loadout.Ammo.Bullets + loadout.Ammo.FireArrows
+	local bundleCost = EquipmentDatabase.AmmoBundleCost
+	points += loadout.Ammo.Arrows * bundleCost.Arrows
+		+ loadout.Ammo.Bullets * bundleCost.Bullets
+		+ loadout.Ammo.FireArrows * bundleCost.FireArrows
 	return points
 end
 
@@ -86,16 +90,17 @@ function LoadoutBudgetValidator.Validate(loadout: Loadout, unlocked: { [string]:
 	end
 
 	local ammo = loadout.Ammo
-	local ammoKinds: { { Kind: string, Count: number } } = {
-		{ Kind = "Arrows", Count = ammo.Arrows },
-		{ Kind = "Bullets", Count = ammo.Bullets },
-		{ Kind = "FireArrows", Count = ammo.FireArrows },
+	local bundleMax = EquipmentDatabase.AmmoBundleMax
+	local ammoKinds: { { Kind: string, Count: number, Max: number } } = {
+		{ Kind = "Arrows", Count = ammo.Arrows, Max = bundleMax.Arrows },
+		{ Kind = "Bullets", Count = ammo.Bullets, Max = bundleMax.Bullets },
+		{ Kind = "FireArrows", Count = ammo.FireArrows, Max = bundleMax.FireArrows },
 	}
 	for _, entry in ammoKinds do
 		local kind, count = entry.Kind, entry.Count
 		if count < 0 or count ~= math.floor(count) then
 			table.insert(errors, "Invalid " .. kind .. " bundle count")
-		elseif count > LoadoutBudgetValidator.MaxAmmoBundles then
+		elseif count > entry.Max then
 			table.insert(errors, "Too many " .. kind .. " bundles")
 		end
 	end

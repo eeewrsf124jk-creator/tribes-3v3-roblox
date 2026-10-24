@@ -1,3 +1,4 @@
 # Toolchain manager (https://github.com/LPGhatguy/aftman). Run `aftman install` once.
 [tools]
 rojo = "rojo-rbx/rojo@7.4.4"
+lune = "lune-org/lune@0.10.4"
