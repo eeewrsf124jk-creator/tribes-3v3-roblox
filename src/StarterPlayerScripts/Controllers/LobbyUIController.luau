@@ -365,7 +365,7 @@ local function refreshDetail()
 	if category == "AMMO" then
 		UIUtil.Label(detail, "DetailName").Text = "AMMO BUNDLES"
 		UIUtil.Label(detail, "DetailLevel").Text = ""
-		UIUtil.Label(detail, "DetailDesc").Text = "Each bundle costs 1 point. Arrows ×12 and Fire Arrows ×6 feed bows (press [R] in combat to switch); Bullets ×6 feed firearms. Use + / − on the right."
+		UIUtil.Label(detail, "DetailDesc").Text = "Arrows ×12 (1 pt, up to 36) and Fire Arrows ×6 (2 pts, up to 12) feed bows (press [R] in combat to switch); Bullets ×6 (1 pt, up to 12) feed firearms. Use + / − on the right."
 		UIUtil.Label(detail, "DetailStats").Text = ""
 		UIUtil.Label(detail, "ShardLabel").Text = ""
 		UIUtil.SetFill(UIUtil.Frame(detail, "ShardBar/Fill"), 0)
@@ -604,7 +604,7 @@ local function bindBuilder()
 	for _, kind in { "Arrows", "Bullets", "FireArrows" } do
 		local function change(delta: number)
 			local ammo = current().Ammo :: any
-			ammo[kind] = math.clamp((ammo[kind] or 0) + delta, 0, Validator.MaxAmmoBundles)
+			ammo[kind] = math.clamp((ammo[kind] or 0) + delta, 0, (Validator.AmmoBundleMax :: any)[kind])
 			UIUtil.Click()
 			refreshBuilder()
 		end

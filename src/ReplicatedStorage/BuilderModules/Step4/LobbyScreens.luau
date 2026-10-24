@@ -181,7 +181,7 @@ function LobbyScreens.LoadoutBuilder(parent: Instance): ScreenGui
 		local row = U.Frame(ammo, kind, S(1, 0.3), S(0, 0), nil, T.PanelLight, 0.2)
 		row.LayoutOrder = i
 		U.Corner(row, 0.25, 0)
-		local label = if kind == "Arrows" then "ARROWS ×12" elseif kind == "Bullets" then "BULLETS ×6" else "FIRE ARROWS ×6"
+		local label = if kind == "Arrows" then "ARROWS ×12 · 1 PT" elseif kind == "Bullets" then "BULLETS ×6 · 1 PT" else "FIRE ARROWS ×6 · 2 PT"
 		U.Text(row, "Label", label, S(0.5, 0.8), S(0.03, 0.1), T.Text, T.Fonts.Bold, Enum.TextXAlignment.Left, 18)
 		local minus = U.Button(row, "Minus", "−", S(0.1, 0.8), S(0.58, 0.1), T.PanelLighter)
 		U.Aspect(minus, 1)

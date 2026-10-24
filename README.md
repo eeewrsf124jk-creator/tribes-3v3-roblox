@@ -15,7 +15,7 @@
 
 ## 준비
 
-1. [Aftman](https://github.com/LPGhatguy/aftman)을 설치한 뒤 프로젝트 폴더에서 `aftman install`을 실행합니다 (Rojo 7.4.4).
+1. [Aftman](https://github.com/LPGhatguy/aftman)을 설치한 뒤 프로젝트 폴더에서 `aftman install`을 실행합니다 (Rojo 7.4.4, Lune 0.10.4).
 2. Roblox Studio에 Rojo 플러그인을 설치합니다 (`rojo plugin install` 또는 Creator Store의 Rojo 플러그인).
 
 ## Studio와 동기화
@@ -57,6 +57,19 @@ require(game.ReplicatedStorage.BuilderModules.StudioBuilderPipeline).RunAll({ Ro
 5. 유료 상품: Creator Dashboard에서 Developer Product를 만들고 `MonetizationCatalog.luau`의 각 `ProductId`에 ID를 넣습니다. 0으로 남은 상품은 "미설정"으로 표시되고 구매 창이 뜨지 않습니다.
 
 ## 테스트
+
+**자동 테스트 (Studio 없이)**
+
+```bash
+lune run tests/run.luau                                   # 로드아웃·탄약·데미지·탄도·업그레이드 규칙 40개
+rojo build -o build/Lobby.rbxl && rojo build arena.project.json -o build/Arena.rbxl
+lune run tests/place.luau build/Lobby.rbxl build/Arena.rbxl  # 빌드된 플레이스의 스크립트 컴파일과 구조 검사
+```
+
+수치 기준과 출처는 `replica/thinktank/report.md`에 있습니다. 실제 게임에서 다른 값을 확인하면 `EquipmentDatabase.luau`와 `tests/run.luau`의 기대값을 함께 고치세요.
+
+**Studio에서 플레이**
+
 
 - Studio의 **Test → Clients and Servers**로 2~6명 로컬 서버를 띄우면 파티, 매치메이킹, 3v3 흐름을 확인할 수 있습니다. 인원이 모자라면 봇이 채웁니다.
 - 출력 창에 `[ServerMain] ... server ready`와 `[ClientMain] client ready`가 보이면 정상입니다.

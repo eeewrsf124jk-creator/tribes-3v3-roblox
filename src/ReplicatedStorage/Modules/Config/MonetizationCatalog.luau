@@ -17,7 +17,7 @@ export type Product = {
 }
 
 local Products: { Product } = {
-	{ Key = "GoldenDrop", Kind = "GoldenDrop", ProductId = 0, PriceRobux = 10, DisplayName = "Golden Drop" },
+	{ Key = "GoldenDrop", Kind = "GoldenDrop", ProductId = 0, PriceRobux = 9, DisplayName = "Golden Drop" },
 	{
 		Key = "RestoreStreakSmall",
 		Kind = "RestoreStreak",

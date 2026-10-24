@@ -37,7 +37,7 @@ local Items: { [string]: EquipmentSpec } = {
 		Cost = 4,
 		AmmoType = "Arrows",
 		BaseDmg = 50,
-		HeadMult = 1.65,
+		HeadMult = 1.75,
 		ReloadTime = 1.8,
 		ProjectileSpeed = 340,
 		GravityScale = 0.15,
@@ -116,7 +116,7 @@ local Items: { [string]: EquipmentSpec } = {
 		Description = "Long-barrel rifle. Near-hitscan at range, slowest reload.",
 		Category = "WEAPONS",
 		SubType = "GUN",
-		Cost = 5,
+		Cost = 4,
 		AmmoType = "Bullets",
 		BaseDmg = 58,
 		HeadMult = 1.7,
@@ -139,7 +139,7 @@ local Items: { [string]: EquipmentSpec } = {
 		Cost = 1,
 		AmmoType = "Infinite(12)",
 		MaxStack = 12,
-		BaseDmg = 38,
+		BaseDmg = 28,
 		HeadMult = 1.5,
 		ChargeTime = 0.5,
 		ProjectileSpeed = 180,
@@ -150,11 +150,11 @@ local Items: { [string]: EquipmentSpec } = {
 	ThrowingKnives = {
 		Id = "ThrowingKnives",
 		DisplayName = "Throwing Knives",
-		Description = "A holster of six silver knives. Quick, accurate, great headshots.",
+		Description = "A holster of five silver knives. Quick, accurate, great headshots.",
 		Category = "WEAPONS",
 		SubType = "THROWABLE",
-		Cost = 2,
-		MaxStack = 6,
+		Cost = 1,
+		MaxStack = 5,
 		BaseDmg = 30,
 		HeadMult = 1.8,
 		Cooldown = 0.45,
@@ -270,7 +270,7 @@ local Items: { [string]: EquipmentSpec } = {
 	},
 	Hammer = {
 		Id = "Hammer",
-		DisplayName = "War Hammer",
+		DisplayName = "Hammer",
 		Description = "Two-handed hammer. Knocks enemies back and staggers them.",
 		Category = "WEAPONS",
 		SubType = "MELEE",
@@ -616,16 +616,33 @@ local RankedUnlockGlory: { [string]: number } = {
 	Scythe = 1600,
 }
 
+-- One bundle = this many rounds.
 local AmmoBundles = {
 	Arrows = 12,
 	Bullets = 6,
 	FireArrows = 6,
 }
 
+-- Points each bundle costs (fire arrows are the premium ammo).
+local AmmoBundleCost = {
+	Arrows = 1,
+	Bullets = 1,
+	FireArrows = 2,
+}
+
+-- Most bundles of each kind one loadout may carry (36 arrows / 12 bullets / 12 fire arrows).
+local AmmoBundleMax = {
+	Arrows = 3,
+	Bullets = 2,
+	FireArrows = 2,
+}
+
 local EquipmentDatabase = {
 	Items = Items,
 	Order = Order,
 	AmmoBundles = AmmoBundles,
+	AmmoBundleCost = AmmoBundleCost,
+	AmmoBundleMax = AmmoBundleMax,
 	RankedUnlockGlory = RankedUnlockGlory,
 	MaxPoints = 12,
 	MaxSlots = 6,
