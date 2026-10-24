@@ -182,7 +182,7 @@ local function writeStats()
 end
 
 function Leaderboards.Refresh()
-	local size = math.min(GameConfig.Lobby.LeaderboardSize, 25)
+	local size = math.clamp(GameConfig.Lobby.LeaderboardSize, 1, 100)
 	local kills = topFrom(killsStore, size, function(p: Player): number
 		local profile = PlayerData.Get(p)
 		return if profile then profile.Kills else 0

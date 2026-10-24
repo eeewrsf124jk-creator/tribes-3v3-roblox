@@ -10,7 +10,7 @@
 --   Utilities: lobbed items show the predicted arc while LMB is held and throw on release;
 --     SnapTrap / Palisade show a green (valid) or red hologram at the placement point.
 --   Healing items start a cast (Q cancels). R toggles fire arrows, F catches a returning chakram.
--- Also replicates aim pitch (10 Hz) and draw ratio, and bends every visible bow string.
+-- Also replicates aim pitch (20 Hz) and draw ratio, and bends every visible bow string.
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -877,7 +877,7 @@ local function step(dt: number)
 	end
 
 	-- aim pitch replication
-	if State.InCombat() and State.Alive() and os.clock() - lastPitchSendAt > 0.1 then
+	if State.InCombat() and State.Alive() and os.clock() - lastPitchSendAt >= 0.05 then
 		lastPitchSendAt = os.clock()
 		Net.Unreliable("ReplicateCharacterState"):FireServer(Camera.Pitch())
 	end

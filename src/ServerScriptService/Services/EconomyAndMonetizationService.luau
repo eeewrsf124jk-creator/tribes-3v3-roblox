@@ -3,7 +3,7 @@
 -- (XP, win streak, Glory RP) and Developer Product receipts.
 --   GenerateVictoryDrop: 4 weighted item cards sharing 23-25 shards on a win (12-14 on a loss).
 --   New players (< 10 matches) are steered toward the cheapest locked unlocks.
---   ProcessReceipt: 10 R$ Golden Drop (~60 shards + a guaranteed locked weapon unlock),
+--   ProcessReceipt: 9 R$ Golden Drop (~60 shards + a guaranteed locked weapon unlock),
 --   20/39/79 R$ Restore Streak (LastLostStreak -> WinStreak), 399/599/799 R$ Item Unlock,
 --   299 R$ Tribe creation. Receipts are idempotent through Profile.ProcessedReceipts.
 
@@ -133,7 +133,7 @@ local function dropPool(profile: Profile): { { Id: string, Weight: number } }
 	return pool
 end
 
--- Split `total` into `n` positive integer shares, largest first (flip order x3 -> x2 -> x1).
+-- Split `total` into `n` positive integer shares, largest first (the cards flip in this order).
 local function splitShares(total: number, n: number): { number }
 	local weights: { number } = {}
 	local sum = 0

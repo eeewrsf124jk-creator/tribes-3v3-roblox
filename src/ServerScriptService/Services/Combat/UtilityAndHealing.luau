@@ -5,6 +5,7 @@
 
 local Workspace = game:GetService("Workspace")
 local Debris = game:GetService("Debris")
+local TweenService = game:GetService("TweenService")
 
 local Modules = game:GetService("ReplicatedStorage"):WaitForChild("Modules")
 local Types = require(Modules.Shared.Types)
@@ -234,6 +235,20 @@ local function placePalisade(c: Combatant, slotIndex: number, target: Vector3): 
 		Armed = true,
 	}
 	VFX.Burst("ImpactDust", cf)
+	-- the logs burst up out of the ground
+	local height = model:GetExtentsSize().Y
+	model:PivotTo(cf * CFrame.new(0, -height, 0))
+	task.spawn(function()
+		local start = os.clock()
+		while model.Parent do
+			local a = math.clamp((os.clock() - start) / 0.25, 0, 1)
+			model:PivotTo(cf * CFrame.new(0, -height * (1 - a) ^ 3, 0))
+			if a >= 1 then
+				break
+			end
+			task.wait()
+		end
+	end)
 	return true
 end
 
@@ -546,12 +561,14 @@ function Utility.Tick(dt: number)
 							Duration = rootTime,
 							Position = d.Position,
 						})
-						-- snap the jaws shut, then remove
+						-- snap the jaws shut (90 degree tween on each hinge), then remove
 						for _, m in d.Model:GetDescendants() do
 							if m:IsA("Motor6D") then
 								local angle = m:GetAttribute("CloseAngle")
 								if type(angle) == "number" then
-									m.C0 = m.C0 * CFrame.Angles(0, 0, math.rad(angle))
+									TweenService:Create(m, TweenInfo.new(0.09, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+										C0 = m.C0 * CFrame.Angles(0, 0, math.rad(angle)),
+									}):Play()
 								end
 							end
 						end

@@ -98,6 +98,7 @@ function CollisionGroups.AssignCharacter(character: Model)
 				d.Massless = true
 			else
 				d.CollisionGroup = CollisionGroups.HitboxParts
+				d.CanCollide = false
 				d.CanQuery = true
 			end
 		end

@@ -12,6 +12,7 @@
 local CollectionService = game:GetService("CollectionService")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 
 local Modules = ReplicatedStorage:WaitForChild("Modules")
@@ -1100,6 +1101,25 @@ function Lobby.Start()
 			refreshHint()
 			if queue and queue.Queued then
 				refreshQueue()
+			end
+		end
+	end)
+
+	-- world SurfaceGuis take no input, so the 3D leaderboards scroll themselves: hold at the
+	-- top, glide down through the rows, hold at the bottom, jump back
+	local SCROLL_SPEED, HOLD = 40, 3
+	local scrollT = 0
+	RunService.RenderStepped:Connect(function(dt)
+		scrollT += dt
+		for _, panel in CollectionService:GetTagged("LeaderboardPanel") do
+			local rows = panel:FindFirstChild("Rows", true)
+			if rows and rows:IsA("ScrollingFrame") then
+				local range = math.max(rows.AbsoluteCanvasSize.Y - rows.AbsoluteWindowSize.Y, 0)
+				local travel = range / SCROLL_SPEED
+				local cycle = HOLD + travel + HOLD
+				local t = scrollT % math.max(cycle, 0.001)
+				local y = if range <= 0 then 0 else math.clamp((t - HOLD) * SCROLL_SPEED, 0, range)
+				rows.CanvasPosition = Vector2.new(0, y)
 			end
 		end
 	end)

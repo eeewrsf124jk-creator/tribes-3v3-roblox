@@ -133,7 +133,7 @@ local Items: { [string]: EquipmentSpec } = {
 	Sling = {
 		Id = "Sling",
 		DisplayName = "Sling",
-		Description = "Leather sling. 12 stones that slowly regenerate.",
+		Description = "Leather sling. Never runs out of stones.",
 		Category = "WEAPONS",
 		SubType = "THROWABLE",
 		Cost = 1,
@@ -434,7 +434,7 @@ local Items: { [string]: EquipmentSpec } = {
 		Duration = 25.0,
 		Size = Vector3.new(8, 6.5, 1.5),
 		ModelName = "Palisade_Model",
-		HotbarHint = "[LMB] Place wall   [R] Rotate",
+		HotbarHint = "[LMB] Place wall   Faces your view",
 	},
 	WarHorn = {
 		Id = "WarHorn",
@@ -478,7 +478,7 @@ local Items: { [string]: EquipmentSpec } = {
 		HealAmount = 35,
 		CastTime = 2.2,
 		ModelName = "Bandage_Model",
-		HotbarHint = "[LMB hold] Bandage (2.2s)",
+		HotbarHint = "[LMB] Bandage (2.2s)   [Q] Cancel",
 	},
 	Apple = {
 		Id = "Apple",
@@ -491,7 +491,7 @@ local Items: { [string]: EquipmentSpec } = {
 		HealAmount = 50,
 		CastTime = 1.2,
 		ModelName = "Apple_Model",
-		HotbarHint = "[LMB hold] Eat (1.2s)",
+		HotbarHint = "[LMB] Eat (1.2s)   [Q] Cancel",
 	},
 	HealingFlask = {
 		Id = "HealingFlask",

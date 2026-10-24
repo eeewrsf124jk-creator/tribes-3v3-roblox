@@ -35,7 +35,6 @@ Net.ReliableNames = {
 	"CustomMatchAction",
 	"UpdateSettings",
 	"PurchaseRequest",
-	"DuelAction",
 	"Notify",
 	"MatchSummary",
 	"InventorySync",

@@ -889,7 +889,7 @@ function Combat.Start()
 			end
 		end
 		relayAccum += dt
-		if relayAccum >= 0.1 then
+		if relayAccum >= 0.05 then
 			relayAccum = 0
 			if next(stateRelay) ~= nil then
 				Net.Unreliable("ReplicateCharacterState"):FireAllClients(stateRelay)

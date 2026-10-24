@@ -15,6 +15,7 @@ local Workspace = game:GetService("Workspace")
 
 local Modules = ReplicatedStorage:WaitForChild("Modules")
 local EquipmentDatabase = require(Modules.Config.EquipmentDatabase)
+local EquipmentRig = require(Modules.Shared.EquipmentRig)
 local Net = require(Modules.Shared.Net)
 local State = require(script.Parent.ClientState)
 
@@ -182,6 +183,18 @@ local function poseRig(rig: Rig, now: number, dt: number)
 		apply(rig, "RightShoulder", CFrame.Angles(rad(88) + pitch * 0.55, 0, rad(10)))
 		apply(rig, "LeftShoulder", CFrame.Angles(rad(80) + pitch * 0.55, 0, rad(-35)))
 		apply(rig, "LeftElbow", CFrame.Angles(rad(25), 0, 0))
+		-- the lock hammer snaps forward on the shot and re-cocks over the reload
+		local held = model:FindFirstChild(EquipmentRig.HeldName)
+		local hammer = if held then held:FindFirstChild("HammerMotor", true) else nil
+		if hammer and hammer:IsA("Motor6D") then
+			local since = now - num(model, "LastShotAt")
+			local reload = if spec and spec.ReloadTime then spec.ReloadTime else 1
+			local fired = 0
+			if since >= 0 and since < reload then
+				fired = if since < 0.12 then 1 else 1 - math.clamp((since - 0.12) / math.max(reload * 0.6, 0.1), 0, 1)
+			end
+			hammer.Transform = CFrame.Angles(rad(-35) * fired, 0, 0)
+		end
 	elseif subType == "MELEE" then
 		local rate = if spec then (spec.SwingRate or 0.5) else 0.5
 		local swingTime = math.clamp(rate * 0.7, 0.18, 0.45)
@@ -214,6 +227,11 @@ local function poseRig(rig: Rig, now: number, dt: number)
 		if (lastShot >= 0 and lastShot < 0.3) or recent then
 			local t = math.clamp(lastShot / 0.3, 0, 1)
 			apply(rig, "RightShoulder", CFrame.Angles(rad(170 - 120 * t), 0, 0))
+		elseif draw > 0 and itemId == "Sling" then
+			-- whirl the sling overhead: the hand traces a circle that speeds up with the charge
+			local w = now * (10 + 14 * draw)
+			apply(rig, "RightShoulder", CFrame.Angles(rad(160) + math.sin(w) * rad(18), 0, math.cos(w) * rad(18)))
+			apply(rig, "RightElbow", CFrame.Angles(rad(20), 0, 0))
 		elseif draw > 0 then
 			apply(rig, "RightShoulder", CFrame.Angles(rad(150 + 20 * draw), 0, rad(-10)))
 			apply(rig, "RightElbow", CFrame.Angles(rad(60 * draw), 0, 0))

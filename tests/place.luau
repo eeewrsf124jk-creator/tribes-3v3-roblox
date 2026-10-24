@@ -76,6 +76,33 @@ local function verify(file: string, role: string)
 		local m = find(game, path)
 		check(m and m.ClassName == "ModuleScript", path)
 	end
+	-- every Net.Reliable("X") / Net.Unreliable("X") must name a declared remote; an unknown name
+	-- would make WaitForChild yield forever at runtime
+	local net = find(game, "ReplicatedStorage/Modules/Shared/Net")
+	if net then
+		local declared: { [string]: { [string]: boolean } } = { Reliable = {}, Unreliable = {} }
+		for kind, set in declared do
+			local block = (net.Source :: string):match("Net%." .. kind .. "Names = (%b{})")
+			for name in (block or ""):gmatch('"([%w_]+)"') do
+				set[name] = true
+			end
+		end
+		local used, unknown = 0, {}
+		for _, inst in game:GetDescendants() do
+			if inst:IsA("LuaSourceContainer") then
+				for kind, name in (inst.Source :: string):gmatch('Net%.(%a+)%("([%w_]+)"%)') do
+					local set = declared[kind]
+					if set then
+						used += 1
+						if not set[name] then
+							table.insert(unknown, kind .. ":" .. name .. " in " .. inst:GetFullName())
+						end
+					end
+				end
+			end
+		end
+		check(used > 0 and #unknown == 0, string.format("%d remote lookups name declared remotes%s", used, if #unknown > 0 then " (unknown: " .. table.concat(unknown, ", ") .. ")" else ""))
+	end
 	-- only the two entry points may be Scripts / LocalScripts
 	local entry = 0
 	for _, inst in game:GetDescendants() do

@@ -3,6 +3,7 @@
 -- TribeHall and Settings. Element names are the contract used by the client controllers.
 
 local UIKit = require(script.Parent.Parent.Kit.UIKit)
+local MonetizationCatalog = require(script.Parent.Parent.Parent.Modules.Config.MonetizationCatalog)
 
 local U = UIKit
 local T = UIKit.Theme
@@ -10,6 +11,9 @@ local S = UDim2.fromScale
 local V2 = Vector2.new
 
 local LobbyScreens = {}
+
+local goldenDrop = MonetizationCatalog.ByKey("GoldenDrop")
+local GOLDEN_DROP_LABEL = if goldenDrop then string.format("GOLDEN DROP %dR$", goldenDrop.PriceRobux) else "GOLDEN DROP"
 
 local function modal(gui: ScreenGui, title: string, size: UDim2, aspect: number): Frame
 	local dim = U.Frame(gui, "Dim", S(1, 1), S(0, 0), nil, T.Black, 0.45)
@@ -44,7 +48,7 @@ function LobbyScreens.LobbyHUD(parent: Instance): ScreenGui
 		{ Name = "CustomButton", Text = "CUSTOM MATCH", Color = Color3.fromRGB(120, 80, 50) },
 		{ Name = "TribeButton", Text = "TRIBE HALL", Color = Color3.fromRGB(140, 40, 50) },
 		{ Name = "SettingsButton", Text = "SETTINGS", Color = T.PanelLighter },
-		{ Name = "GoldenDropButton", Text = "GOLDEN DROP 10R$", Color = Color3.fromRGB(200, 150, 30) },
+		{ Name = "GoldenDropButton", Text = GOLDEN_DROP_LABEL, Color = Color3.fromRGB(200, 150, 30) },
 		{ Name = "RestoreStreakButton", Text = "RESTORE STREAK", Color = Color3.fromRGB(200, 80, 30) },
 	}
 	for i, a in actions do

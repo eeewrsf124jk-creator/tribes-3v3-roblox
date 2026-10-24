@@ -2,9 +2,9 @@
 
 > 사용자가 "알아서 만들고 실행까지"를 요청해서, 단계마다 확인을 받지 않고 진행했습니다.
 
-- **현재 단계:** 수치 조정과 자동 검증 완료. GitHub 푸시는 저장소 권한 대기 중.
+- **현재 단계:** 전체 문서화 완료(`docs/`). 원본 명세와 항목별로 대조해 빠진 연출(총 공이, 슬링 회전, 덫 닫힘, 성벽 솟음, 전광판 50위 스크롤, 20Hz 상태 동기화)을 채움. 브랜치 `claude/tribes-3v3-game`, PR #1.
 - **대상:** Roblox "Tribes 3v3" (Snick Co.) [E1]
 - **방향:** 기능과 규칙만 맞추고, 원본 게임의 에셋, 로고, 문구는 쓰지 않습니다. 모든 모델과 UI는 절차적으로 직접 만든 것입니다.
 - **확정 수치:** report.md의 "바꾼 것" 참고 [E1~E9]
 - **미확인 (가정):** 체력 100, 라운드 60초, 링 반경 180→0, 방어구 감쇄율, 나무 활 데미지 [E10]
-- **검증 방법:** `rojo build`로 두 플레이스를 빌드합니다. `lune run tests/run.luau`(40개 로직 테스트)와 `lune run tests/place.luau`(빌드된 .rbxl 구조 검사)를 실행합니다. luau-lsp strict 타입 검사도 오류 없이 통과합니다.
+- **검증 방법:** `rojo build`로 두 플레이스를 빌드합니다. `lune run tests/run.luau`(40개 로직 테스트), `lune run tests/world.luau`(빌더 실행 검사 14개), `lune run tests/place.luau`(빌드된 .rbxl 구조·원격 이름 검사)를 실행합니다. luau-lsp strict 타입 검사도 오류 없이 통과합니다. 문서 레퍼런스는 `lune run tools/gendocs.luau`로 다시 만듭니다.

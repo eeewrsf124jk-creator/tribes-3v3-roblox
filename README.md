@@ -2,6 +2,10 @@
 
 3대3 라운드제 원거리/근접 아레나 게임의 Rojo 프로젝트입니다. 모든 맵, 무기, VFX, UI는 코드로 절차적으로 생성되므로 별도의 .rbxl 에셋 없이 동작합니다. 모든 스크립트는 `--!strict` Luau이며 서버는 `ServerMain`, 클라이언트는 `ClientMain` 하나가 진입점입니다.
 
+## 문서
+
+게임 규칙, 수치, 구조, 화면, 데이터, 빌드 방법 전체는 [docs/](docs/README.md)에 있습니다. 장비 34종의 모든 수치, 설정값, 원격 34개, 스크립트 62개의 공개 함수, 월드와 화면의 모든 요소는 코드에서 자동 생성한 [docs/reference/](docs/reference/)에 있습니다. 원본 명세와 구현 대조는 [docs/13-spec-traceability.md](docs/13-spec-traceability.md)를 보세요.
+
 ## 구성
 
 | 파일 | 역할 |
@@ -63,7 +67,9 @@ require(game.ReplicatedStorage.BuilderModules.StudioBuilderPipeline).RunAll({ Ro
 ```bash
 lune run tests/run.luau                                   # 로드아웃·탄약·데미지·탄도·업그레이드 규칙 40개
 rojo build -o build/Lobby.rbxl && rojo build arena.project.json -o build/Arena.rbxl
-lune run tests/place.luau build/Lobby.rbxl build/Arena.rbxl  # 빌드된 플레이스의 스크립트 컴파일과 구조 검사
+lune run tests/world.luau                                 # Studio 빌더를 그대로 돌려 월드·프리팹·화면 14개 검사
+lune run tests/place.luau build/Lobby.rbxl build/Arena.rbxl  # 빌드된 플레이스의 스크립트 컴파일, 구조, 원격 이름 검사
+lune run tools/gendocs.luau                               # docs/reference 자동 문서 다시 만들기
 ```
 
 수치 기준과 출처는 `replica/thinktank/report.md`에 있습니다. 실제 게임에서 다른 값을 확인하면 `EquipmentDatabase.luau`와 `tests/run.luau`의 기대값을 함께 고치세요.
